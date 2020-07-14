@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="static/css/bootstrap.min.css">
+
+  <title>Hello, world!</title>
+  <!--
+    background-color: rgba(86, 61, 124, .15);
+      border: 1px solid rgba(86, 61, 124, .2);
+    -->
+  <style>
+    body {
+      padding-top: 0px;
+      background-color: black;
+    }
+
+    .card-header {
+      padding: .50rem 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row" style="margin-top: 0px;">
+      <div class="col-8" style="padding-left:0px; padding-right:0.5em;">
+        <div class="card" >
+          <h5 class="card-header bg-warning">Time</h5>
+          <div class="card-body" style="overflow: hidden; padding: 1px;">
+            <div style="margin-left: auto; margin-right: auto; width:300px">
+              <iframe src="http://free.timeanddate.com/clock/i717bop0/n78/tluk/fn16/fs16/tct/pct/ftb/pa8/tt0/th1/tb4"
+                frameborder="0" width="258" height="55" allowTransparency="true"></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 10px;">
+          <h5 class="card-header bg-info">Weather</h5>
+          <div class="card-body" style="padding: 2px; ">
+            <!--
+              <script id="embedweather" type='text/javascript' src='https://darksky.net/widget/graph-bar/53.4914,-6.1525/ca12/en.js?width=100%&height=300&title=Full Forecast&textColor=333333&bgColor=transparent&transparency=false&skyColor=undefined&fontFamily=Default&customFont=&units=ca&timeColor=333333&tempColor=333333&currentDetailsOption=false'></script>
+              <script id="embedweather" type='text/javascript' src='https://darksky.net/widget/small/53.4914,-6.1525/ca12/en.js?width=100%&height=200&title=donabate, ireland&textColor=333333&bgColor=transparent&transparency=true&skyColor=undefined&fontFamily=Default&customFont=&units=ca'></script>            
+              <script id="embedweather" type='text/javascript' src='https://darksky.net/widget/default/53.4914,-6.1525/ca12/en.js?width=100%&height=350&title=Donabate&textColor=333333&bgColor=FFFFFF&transparency=false&skyColor=undefined&fontFamily=Default&customFont=&units=ca&htColor=333333&ltColor=C7C7C7&displaySum=yes&displayHeader=yes'></script>
+              -->
+            <script id="embedweather" type='text/javascript'
+              src='https://darksky.net/widget/small/53.4914,-6.1525/ca12/en.js?width=100%&height=150&title=donabate&textColor=333333&bgColor=transparent&transparency=true&skyColor=undefined&fontFamily=Trebuchet MS&customFont=&units=ca'></script>
+              <script type='text/javascript' src='https://darksky.net/widget/graph-bar/53.4914,-6.1525/ca12/en.js?width=100%&height=125&title=Full Forecast&textColor=333333&bgColor=transparent&transparency=true&skyColor=undefined&fontFamily=Trebuchet MS&customFont=&units=ca&timeColor=333333&tempColor=333333&currentDetailsOption=false'></script>          </div>
+        </div>
+      </div>
+      <div class="col-4" style="padding-right:0px; padding-left:0.5em;">
+        <div class="card">
+          <h5 class="card-header bg-success">Train</h5>
+          <div class="card-body" style="padding: 0; height:200px;">
+            <div style="height: 100%; margin: 0em; overflow-y: auto; overflow-x:hidden;">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Destination</th>
+                  </tr>
+                </thead>
+                <tbody id="times">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 10px; height:200px;">
+          <h5 class="card-header bg-primary">Winds</h5>
+          <div class="card-body" style="overflow: hidden; padding: 1px;">
+            <iframe width="100%" style="overflow: hidden;"
+              src="https://earth.nullschool.net/#current/wind/surface/level/grid=on/orthographic=-8.60,53.53,2024"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="static/js/jquery-3.3.1.min.js"></script>
+  <script src="static/js/popper.min.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Refresh the weather window
+      var weatherRefresh = setInterval(
+        function () {
+          location.reload(true);
+        }, 900000
+      ); // 15 minutes
+
+      //var frame = $('#embedweather').next();
+      //console.log(frame.contents().find("p#attribution").hide());
+
+      function refresh_train() {
+        $.getJSON("/train", function (data) {
+          var items = [];
+          $.each(data, function (key, val) {
+            var entry = [];
+            entry.push('<tr>');
+            entry.push('<th scope="row">' + val[0] + '</th>');
+            entry.push('<td>' + val[1] + '</td>');
+            entry.push('</tr>');
+            items.push(entry.join(""));
+          });
+          $('#times').empty();
+          $('#times').html(items.join(""));
+        });
+      };
+      refresh_train();
+      var trainRefresh = setInterval(
+        function () {
+          refresh_train();
+        }, 60000
+      ); // 1 minute
+
+    });
+  </script>
+</body>
+
+</html>
+<!--
+<style type="text/css">
+p.markdown-html.panel-text-content {
+overflow: hidden;
+}
+p.markdown-html.panel-text-content iframe {
+height:225px;
+}
+</style>
+<script type="text/javascript">
+var weatherProperties = 'lat=53.3393&lon=-6.2813&color=#FFFFFF&text-color=#FFFFFF&units=uk';
+
+// initial load
+document.getElementById('embedweather').src = 'http://forecast.io/embed/?ts=' + (Date.now()) + '#' + weatherProperties;
+
+// refresh
+var weatherRefresh = setInterval(function() { document.getElementById('embedweather').src = 'http://forecast.io/embed/?ts=' + (Date.now()) + '#' + weatherProperties; }, 1800000);
+
+</script>
+<iframe id="embedweather" height="100%" src="#" style="margin: 0; padding: 0; border: none; width:100%; position:relative; top:-50px; overflow:hidden; margin-bottom: -70px;"></iframe>
+-->
