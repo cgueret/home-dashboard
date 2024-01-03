@@ -19,6 +19,15 @@ sudo systemctl enable home-dashboard
 sudo systemctl start home-dashboard
 ```
 
+Then, follow the tips on https://dietpi.com/forum/t/non-interactive-rpi-kiosk-improvements/14886 to improve the settings.
+
+Modify /var/lib/dietpi/dietpi-software/installed/chromium-autostart.sh with:
+```
+CHROMIUM_OPTS="--kiosk --no-crash-upload --disable-breakpad --disable-crash-reporter --incognito --disable-translate --no-first-run --fast --fast-start --disable-features=TranslateUI --disk-cache-dir=/dev/null --disk-cache-size=1 --password-store=basic --start-fullscreen --noerrdialogs --disable-infobars --window-size=800,480 --window-position=0,0"
+
+exec "$STARTX" "$FP_CHROMIUM" $CHROMIUM_OPTS "${URL:-https://dietpi.com/}" -- -nocursor
+```
+
 # Notes
 To run the server:
 ```
