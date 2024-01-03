@@ -12,6 +12,13 @@ sudo apt-get install python python3-flask python3-bs4 python3-requests
 
 Configure kiosk mode: https://dietpi.com/docs/software/desktop/#chromium
 
+```
+sudo cp home-dashboard.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable home-dashboard
+sudo systemctl start home-dashboard
+```
+
 # Notes
 To run the server:
 ```
