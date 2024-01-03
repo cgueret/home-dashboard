@@ -1,0 +1,13 @@
+[Unit]
+Description=Home dashboard
+After=multi-user.target
+
+[Service]
+User=dietpi
+Group=dietpi
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python3 /home/dietpi/home-dashboard/main.py
+
+[Install]
+WantedBy=multi-user.target
